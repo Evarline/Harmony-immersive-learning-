@@ -1,4 +1,4 @@
-/* Guardians of the Ocean — shared chrome (install, compass, toasts, tutorial) */
+/* Immersive Learning — shared chrome (install, compass, toasts, tutorial) */
 .n-prompt{
   position:fixed; inset:0; z-index:80;
   display:flex; align-items:flex-end; justify-content:center;

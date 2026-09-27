@@ -1,6 +1,6 @@
 # Stripe Checkout API
 
-Production Node/Express + Prisma/PostgreSQL service for Guardians of the Ocean. The live site stays a static Render app. This folder is the payment backend. Fulfillment happens **only** in the webhook handler — never from the success URL.
+Production Node/Express + Prisma/PostgreSQL service for Immersive Learning. The live site stays a static Render app. This folder is the payment backend. Fulfillment happens **only** in the webhook handler — never from the success URL.
 
 The desktop Wallet Overview button posts to `POST /api/checkout`, then redirects with `window.location.href = session.url`.
 

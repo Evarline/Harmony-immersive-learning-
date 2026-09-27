@@ -2,7 +2,7 @@
   "name": "guardians-stripe",
   "private": true,
   "version": "1.0.0",
-  "description": "Stripe Checkout + webhook API for Guardians of the Ocean",
+  "description": "Stripe Checkout + webhook API for Immersive Learning",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

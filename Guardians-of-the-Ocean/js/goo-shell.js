@@ -8,7 +8,7 @@
   var Notify = GOO.Notify;
   var Compass = GOO.Compass;
   var SHARE_URL = (location.origin && location.origin !== 'null') ? location.href : 'https://github.com/IanDev-cmd/Guardians-of-the-Ocean';
-  var SHARE_TEXT = 'Guardians of the Ocean — live coastal restoration, 3D globe and 2D maps.';
+  var SHARE_TEXT = 'Immersive Learning — live coastal restoration, 3D globe and 2D maps.';
   var TUTORIAL_KEY = 'goo-tutorial-v1';
   var deferredPrompt = null;
 
@@ -48,7 +48,7 @@
     });
     if (pwaBtn) pwaBtn.addEventListener('click', promptInstall);
     window.addEventListener('appinstalled', function () {
-      Notify.toast({ tone: 'green', title: 'Installed', sub: 'Launch Guardians of the Ocean from your home screen.', n: '01' });
+      Notify.toast({ tone: 'green', title: 'Installed', sub: 'Launch Immersive Learning from your home screen.', n: '01' });
     });
   }
 
@@ -86,7 +86,7 @@
       ov.className = 'tut-ask';
       ov.innerHTML =
         '<div class="tut-ask-card">' +
-          '<div class="tut-brand"><b>01</b><span>GUARDIANS</span></div>' +
+          '<div class="tut-brand"><b>01</b><span>IMMERSIVE LEARNING</span></div>' +
           '<p>🌊 Would you like a tutorial?</p>' +
           '<small>A short tour of the globe, maps, compass and live ledger. 🌍</small>' +
           '<div class="tut-ask-row">' +

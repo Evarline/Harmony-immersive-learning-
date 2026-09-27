@@ -1,4 +1,4 @@
-# Guardians of the Ocean
+# Immersive Learning
 
 Coastal restoration web app plus a complementary PWA (Global Impact Ledger). Ten pilot cities, a Three.js globe, Leaflet shoreline maps, GPS compass, install/share, and a first-visit tutorial.
 

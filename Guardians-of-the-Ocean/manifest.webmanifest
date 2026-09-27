@@ -1,6 +1,6 @@
 {
-  "name": "Guardians of the Ocean",
-  "short_name": "Guardians",
+  "name": "Immersive Learning",
+  "short_name": "Immersive",
   "description": "Global Impact Ledger PWA with live 3D globe, 2D coastal maps and GPS compass.",
   "start_url": "./pwa/island-weather-pwa/index.html",
   "scope": "./",

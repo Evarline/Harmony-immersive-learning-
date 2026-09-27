@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="darkreader-lock">
 <meta name="color-scheme" content="dark">
-<title>AquaAsk — H2O.ai</title>
+<title>Immersive Learning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -153,11 +153,11 @@
   }
   .nav-brand{
     font-family:'Archivo Black',sans-serif;
-    font-size:.72rem; letter-spacing:.28em; color:var(--white);
+    font-size:.72rem; letter-spacing:.12em; color:var(--white);
     text-decoration:none;
     white-space:nowrap;
   }
-  .nav-links{display:none; align-items:center; gap:26px;}
+  .nav-links{display:none; align-items:center; gap:14px;}
   .nav-links a{
     color:var(--grey); text-decoration:none;
     font-size:11px; letter-spacing:.06em; font-weight:500;
@@ -783,10 +783,12 @@
 <div class="nav-hotzone" id="navHotzone" title="Show menu"></div>
 <div class="site-nav-wrap" id="navWrap">
   <div style="width:100%;max-width:48rem;">
-    <nav class="site-nav" aria-label="AquaAsk">
-      <a class="nav-brand" href="/">AQUAASK</a>
+    <nav class="site-nav" aria-label="Immersive Learning">
+      <a class="nav-brand" href="../index.html">IMMERSIVE</a>
       <div class="nav-links">
-        <a href="/" class="is-on">Ask</a>
+        <a href="../index.html">Home</a>
+        <a href="./aquaask.html" class="is-on">Ask</a>
+        <a href="../Guardians-of-the-Ocean/desktop.html">Globe</a>
         <a href="#library">Library</a>
         <a href="#sources">Sources</a>
         <a href="#pulse">Pulse</a>
@@ -800,7 +802,9 @@
       </div>
     </nav>
     <div class="nav-mobile" id="navMobile">
-      <a href="/">Ask</a>
+      <a href="../index.html">Home</a>
+      <a href="./aquaask.html">Ask</a>
+      <a href="../Guardians-of-the-Ocean/desktop.html">Globe</a>
       <a href="#library">Library</a>
       <a href="#sources">Sources</a>
       <a href="#pulse">Pulse</a>
@@ -810,7 +814,7 @@
   </div>
 </div>
 
-<section class="stage" id="stage" aria-label="AquaAsk">
+<section class="stage" id="stage" aria-label="Immersive Learning">
   <img class="stage-bg is-on" src="h2o-assets/aquaask-bg-1.jpg" alt="">
   <img class="stage-bg" src="h2o-assets/aquaask-bg-2.jpg" alt="">
   <img class="stage-bg" src="h2o-assets/aquaask-bg-3.jpg" alt="">
@@ -826,7 +830,7 @@
           <circle cx="11" cy="11" r="7"/>
           <path d="m20 20-3.2-3.2"/>
         </svg>
-        <input id="askInput" type="search" name="q" placeholder="Ask AquaAsk anything about water, pace, or the bottle…" autocomplete="off" autofocus>
+        <input id="askInput" type="search" name="q" placeholder="Ask Immersive Learning" autocomplete="off" autofocus>
       </div>
       <button class="ask-btn" type="submit">ASK</button>
       <button class="ai-btn" id="aiBtn" type="button" aria-label="AI mode" aria-pressed="false" title="AI">
@@ -1313,7 +1317,7 @@
   function revealAnswer(data, failed){
     stopTheater(function(){
       if(failed){
-        replies = ["AquaAsk could not reach the knowledge engine. Confirm the API is running on port 8001 and try again."];
+        replies = ["Immersive Learning could not reach the knowledge engine. Confirm the API is running on port 8001 and try again."];
         sourceList = [];
         renderDock();
         slide = 0;
@@ -1390,10 +1394,28 @@
       if(input){
         input.placeholder = aiOn
           ? "Ask the model — hydration, pace, Terra, the bottle…"
-          : "Ask AquaAsk anything about water, pace, or the bottle…";
+          : "Ask Immersive Learning";
         input.focus();
       }
     });
+  }
+
+  var preset = "";
+  var aiPreset = false;
+  try{
+    var incoming = new URLSearchParams(location.search);
+    preset = (incoming.get("q") || "").trim();
+    aiPreset = incoming.get("ai") === "1";
+  }catch(err){}
+  if(aiPreset && aiBtn){
+    aiOn = true;
+    aiBtn.classList.add("is-on");
+    aiBtn.setAttribute("aria-pressed", "true");
+    if(input) input.placeholder = "Ask the model — hydration, pace, Terra, the bottle…";
+  }
+  if(preset && input){
+    input.value = preset;
+    runSearch(preset);
   }
 
   if(form){

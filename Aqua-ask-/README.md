@@ -1,4 +1,4 @@
-# AquaAsk
+# Immersive Learning
 
 OneAquaHealth IEEE Global Hackathon — AI search over OneAquaHealth publications.
 

@@ -1,4 +1,4 @@
-# Guardians of the Ocean — static web app + PWA
+# Immersive Learning — static web app + PWA
 # Separate from weott-proposal-engine. Static hosting only.
 services:
   - type: web

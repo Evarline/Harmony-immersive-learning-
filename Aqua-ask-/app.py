@@ -1,5 +1,5 @@
 """
-AquaAsk RAG backend — FastAPI + ChromaDB + Gemini embeddings + xAI Grok.
+Immersive Learning RAG backend — FastAPI + ChromaDB + Gemini embeddings + xAI Grok.
 
 Env:
   XAI_API_KEY          Grok generation (must start with xai-)
@@ -72,14 +72,14 @@ GEMINI_CHAT_FALLBACKS = (
 GITHUB_REPO_URL = os.getenv("GITHUB_REPO_URL", "https://github.com/IanDev-cmd/Aqua-ask-")
 PUBLIC_APP_URL = os.getenv("PUBLIC_APP_URL", "https://aqua-ask.onrender.com")
 USER_AGENT = (
-    f"AquaAsk/1.0 (+{PUBLIC_APP_URL}; {GITHUB_REPO_URL}) Mozilla/5.0 "
-    "(compatible; AquaAskBot/1.0; +ingestion)"
+    f"ImmersiveLearning/1.0 (+{PUBLIC_APP_URL}; {GITHUB_REPO_URL}) Mozilla/5.0 "
+    "(compatible; ImmersiveLearningBot/1.0; +ingestion)"
 )
 INSUFFICIENT = (
     "I do not have sufficient information in my knowledge base to answer this."
 )
 WELCOME = (
-    "Hello — I am AquaAsk. Ask about the OneAquaHealth project, urban stream health, "
+    "Hello — I am Immersive Learning. Ask about the OneAquaHealth project, urban stream health, "
     "the five European pilot cities (Coimbra, Toulouse, Ghent, Benevento, Oslo), "
     "or the publications in this knowledge base."
 )
@@ -96,7 +96,7 @@ _NOISE_MARKERS = (
     "author information",
     "affiliations national",
 )
-SYSTEM_PROMPT = """You are AquaAsk, an elite, scientific conversational AI engine built explicitly for the OneAquaHealth Global Hackathon. Your primary purpose is to translate complex urban river datasets into clear, actionable "One Health" insights for citizens and policymakers.
+SYSTEM_PROMPT = """You are Immersive Learning, an elite, scientific conversational AI engine built explicitly for the OneAquaHealth Global Hackathon. Your primary purpose is to translate complex urban river datasets into clear, actionable "One Health" insights for citizens and policymakers.
 
 ### CORE OPERATIONAL INSTRUCTIONS:
 1. STRICT GROUNDING: You must answer the user's query using ONLY the provided scientific publication text chunks retrieved from ChromaDB. Do not rely on your general training knowledge or assume outside facts.
@@ -792,7 +792,7 @@ def chunk_documents(docs: Iterable[ParsedDoc]) -> tuple[list[str], list[str], li
 # ---------------------------------------------------------------------------
 # Vector store + models
 # ---------------------------------------------------------------------------
-class AquaAskEngine:
+class ImmersiveLearningEngine:
     def __init__(self) -> None:
         self._embeddings: Optional[Any] = None
         self._llm: Optional[Any] = None
@@ -1590,7 +1590,7 @@ class AquaAskEngine:
         return fallback
 
 
-ENGINE = AquaAskEngine()
+ENGINE = ImmersiveLearningEngine()
 
 
 def handle_search(query_text: str, force_web_search: bool = False) -> dict:
@@ -1644,13 +1644,13 @@ def _seed_oneaquahealth_job() -> None:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     chunks = ENGINE.ensure_ready()
-    LOGGER.info("AquaAsk RAG API ready — %s chunks on %s", chunks, CHROMA_DIR)
+    LOGGER.info("Immersive Learning RAG API ready — %s chunks on %s", chunks, CHROMA_DIR)
     loop = asyncio.get_running_loop()
     loop.run_in_executor(None, _warmup_llms)
     yield
 
 
-app = FastAPI(title="AquaAsk RAG", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="Immersive Learning", version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
