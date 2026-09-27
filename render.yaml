@@ -12,6 +12,7 @@ services:
     buildFilter:
       paths:
         - index.html
+        - agent-bridge.js
         - Guardians-of-the-Ocean/**
         - Aqua-ask-/aquaask.html
         - Aqua-ask-/h2o-assets/**
@@ -54,6 +55,8 @@ services:
       - key: GOOGLE_API_KEY
         sync: false
       - key: XAI_API_KEY
+        sync: false
+      - key: AGENT_WEBHOOK_SECRET
         sync: false
 
   - type: web
