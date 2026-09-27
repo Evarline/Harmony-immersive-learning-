@@ -795,7 +795,7 @@
         <a href="#labs">Labs</a>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <a class="nav-cta" href="https://github.com/IanDev-cmd/Aqua-ask-" target="_blank" rel="noopener">GITHUB</a>
+        <a class="nav-cta" href="https://github.com/IanDev-cmd/Harmony-immersive-learning-" target="_blank" rel="noopener">GITHUB</a>
         <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -809,7 +809,7 @@
       <a href="#sources">Sources</a>
       <a href="#pulse">Pulse</a>
       <a href="#labs">Labs</a>
-      <a href="https://github.com/IanDev-cmd/Aqua-ask-" target="_blank" rel="noopener">GITHUB</a>
+      <a href="https://github.com/IanDev-cmd/Harmony-immersive-learning-" target="_blank" rel="noopener">GITHUB</a>
     </div>
   </div>
 </div>
@@ -936,9 +936,14 @@
     toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 2400);
   }
 
-  var GITHUB_URL = "https://github.com/IanDev-cmd/Aqua-ask-";
+  var GITHUB_URL = "https://github.com/IanDev-cmd/Harmony-immersive-learning-";
   var RENDER_URL = "https://aqua-ask.onrender.com";
-  var API_BASE = (location.protocol === "file:") ? "http://127.0.0.1:8001" : "";
+  var API_BASE = "";
+  if (location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost") {
+    API_BASE = "http://127.0.0.1:8001";
+  } else if (location.pathname.indexOf("/Aqua-ask-/") === 0) {
+    API_BASE = RENDER_URL;
+  }
   var replies = [];
   var sourceList = [];
   var form = document.getElementById("askForm");
@@ -1464,5 +1469,6 @@
   })();
 })();
 </script>
+<script src="../agent-bridge.js"></script>
 </body>
 </html>

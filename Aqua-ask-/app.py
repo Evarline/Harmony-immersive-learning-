@@ -34,6 +34,8 @@ from urllib.parse import parse_qs, urlparse
 
 import requests
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadFile
+
+from agent_bridge import router as agent_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -86,7 +88,7 @@ GEMINI_CHAT_FALLBACKS = (
     "gemini-flash-lite-latest",
     "gemini-2.5-flash",
 )
-GITHUB_REPO_URL = os.getenv("GITHUB_REPO_URL", "https://github.com/IanDev-cmd/Aqua-ask-")
+GITHUB_REPO_URL = os.getenv("GITHUB_REPO_URL", "https://github.com/IanDev-cmd/Harmony-immersive-learning-")
 PUBLIC_APP_URL = os.getenv("PUBLIC_APP_URL", "https://aqua-ask.onrender.com")
 USER_AGENT = (
     f"ImmersiveLearning/1.0 (+{PUBLIC_APP_URL}; {GITHUB_REPO_URL}) Mozilla/5.0 "
@@ -1863,6 +1865,7 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Immersive Learning", version="1.0.0", lifespan=lifespan)
+app.include_router(agent_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
