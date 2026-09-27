@@ -4,7 +4,7 @@
 
 services:
   - type: web
-    name: guardians-of-the-ocean
+    name: harmony-immersive-learning
     runtime: static
     branch: main
     buildCommand: "true"
@@ -81,11 +81,11 @@ services:
         sync: false
       - key: FRONTEND_ORIGIN
         fromService:
-          name: guardians-of-the-ocean
+          name: harmony-immersive-learning
           type: web
           envVarKey: RENDER_EXTERNAL_URL
       - key: APP_BASE_URL
         fromService:
-          name: guardians-of-the-ocean
+          name: harmony-immersive-learning
           type: web
           envVarKey: RENDER_EXTERNAL_URL
