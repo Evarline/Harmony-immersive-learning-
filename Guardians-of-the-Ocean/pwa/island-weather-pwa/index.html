@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1210">
+<title>Save the Ocean</title>
+<link rel="manifest" href="../../manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/goo.css">
+<style>
+  :root{
+    --ink:#ffffff;
+    --ink-dim:rgba(255,255,255,0.62);
+    --ink-dimmer:rgba(255,255,255,0.42);
+    --card-bg:rgba(255,255,255,0.94);
+    --card-icon:#20241f;
+    --accent:#84c02c;
+    --divider:rgba(255,255,255,0.35);
+    --tile: 72px;
+    --gap: 10px;
+    --grid-w: min(100%, calc(var(--tile) * 4 + var(--gap) * 3));
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  body{
+    background-image:url('background.jpg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+  }
+
+  .stage{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:stretch;
+    justify-content:flex-end;
+  }
+
+  .panel{
+    width: min(100%, 440px);
+    height: 100%;
+    max-height: 100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:flex-end;
+    gap: clamp(8px, 1.4vh, 16px);
+    padding-top: max(24px, calc(env(safe-area-inset-top) + 12px));
+    padding-right: clamp(14px, 4vw, 28px);
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: clamp(14px, 4vw, 28px);
+    overflow:hidden;
+  }
+
+  .pwa-hero{
+    display:none;
+    position:fixed;
+    left:clamp(20px, 4vw, 56px);
+    top:13.9%;
+    width:min(34vw, 380px);
+    z-index:4;
+    color:#fff;
+    pointer-events:none;
+    text-shadow:0 10px 28px rgba(0,20,40,.28);
+    font-family:'Quicksand', sans-serif;
+  }
+  .pwa-hero h1{
+    margin:0;
+    font-size:clamp(40px, 6.2vw, 84px);
+    font-weight:700;
+    line-height:.97;
+    letter-spacing:-.005em;
+  }
+  .pwa-hero p{
+    margin:2.2vh 0 0;
+    width:min(93%, 38ch);
+    font-size:clamp(13px, 1.35vw, 18px);
+    font-weight:600;
+    line-height:1.72;
+    color:rgba(255,255,255,.92);
+  }
+  .headline, .subtext{ display:none; }
+  .info{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    text-align:right;
+    color:var(--ink);
+    width:100%;
+    max-width:min(100%, 560px);
+    flex:0 0 auto;
+    min-height:0;
+  }
+
+  .headline{
+    font-size: clamp(28px, 7.2vmin, 56px);
+    font-weight:600;
+    line-height:1.08;
+    letter-spacing:-0.5px;
+    margin:0 0 clamp(6px, 1.2vh, 14px) 0;
+    max-width:100%;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+
+  .subtext{
+    font-size:clamp(13px, 3.2vmin, 22px);
+    font-weight:400;
+    line-height:1.4;
+    color:var(--ink-dim);
+    max-width:100%;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+
+  .fade{
+    opacity:0;
+    transform:translateY(4px);
+  }
+
+  .time{
+    margin-top:clamp(10px, 2.2vh, 28px);
+    font-size:clamp(26px, 6.4vmin, 48px);
+    font-weight:500;
+    letter-spacing:0.5px;
+  }
+
+  .time sup{
+    font-size:0.55em;
+    font-weight:400;
+    margin-left:2px;
+  }
+
+  .date{
+    margin-top:clamp(4px, 0.8vh, 10px);
+    font-size:clamp(12px, 2.6vmin, 18px);
+    font-weight:400;
+    color:var(--ink-dimmer);
+    line-height:1.4;
+  }
+
+  .divider{
+    margin:0;
+    width:clamp(140px, 42vw, 280px);
+    height:1px;
+    background:var(--divider);
+    flex:0 0 auto;
+  }
+
+  .grid{
+    width: var(--grid-w);
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: var(--gap);
+    flex: 0 0 auto;
+    overflow:hidden;
+  }
+
+  .tile{
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--card-bg);
+    box-shadow:0 6px 14px rgba(0,0,0,0.16);
+    cursor:pointer;
+    border:none;
+    padding:0;
+    width:100%;
+    aspect-ratio:1 / 1;
+    min-height:0;
+    max-height:86px;
+    transition:transform .12s ease, background .18s ease, box-shadow .18s ease;
+  }
+
+  .tile:hover{
+    transform:translateY(-2px) scale(1.04);
+    box-shadow:0 10px 20px rgba(0,0,0,.22);
+  }
+
+  .tile:active{
+    transform:translateY(0) scale(0.96);
+  }
+
+  .tile svg{
+    width:46%;
+    height:46%;
+  }
+
+  .tile.active{
+    background:var(--accent);
+  }
+  .tile.active svg *{
+    stroke:#ffffff;
+  }
+  .tile svg *{
+    stroke:var(--card-icon);
+    transition:stroke .18s ease;
+  }
+
+  .pay-stack{
+    width: var(--grid-w);
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pay-card{
+    width: 100%;
+    flex: 0 0 auto;
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: 0 10px 28px rgba(0,16,40,.22);
+    border-radius: 16px;
+    padding: 14px 14px 12px;
+    color: #0d0f0c;
+    text-align: left;
+  }
+  .pay-card .tpop-h{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .pay-card .tpop-rank{
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    background:#0d0f0c; color:#fff; font:600 12px/1 'JetBrains Mono', ui-monospace, monospace;
+    flex-shrink:0; border-radius:8px;
+  }
+  .pay-card .tpop-h b{ display:block; font-size:13px; font-weight:700; letter-spacing:.04em; }
+  .pay-card .tpop-h i{ display:block; font-style:normal; font-size:9px; color:#6b7268; font-family:'JetBrains Mono', ui-monospace, monospace; margin-top:1px; }
+  .pay-card .tpop-ph{
+    margin-left:auto; font:600 10px/1 'JetBrains Mono', ui-monospace, monospace;
+    color:#5f9226; background:rgba(139,197,63,.16); padding:4px 7px; border-radius:8px;
+  }
+  .pay-card .tpop-kpis{ display:flex; gap:6px; margin-bottom:8px; }
+  .pay-card .tpop-kpi{
+    flex:1; background:#f4f5f1; padding:8px 4px; text-align:center; border-radius:10px; min-width:0;
+  }
+  .pay-card .tpop-kpi b{ display:block; font:600 12px/1.15 'JetBrains Mono', ui-monospace, monospace; }
+  .pay-card .tpop-kpi i{ font-style:normal; font-size:8px; color:#6b7268; letter-spacing:.04em; font-family:'JetBrains Mono', ui-monospace, monospace; }
+  .pay-card .tpop-fund{
+    font:600 11px/1.3 'JetBrains Mono', ui-monospace, monospace;
+    color:#5f9226; margin-bottom:8px; letter-spacing:.02em;
+  }
+  .pay-card .pay-email{
+    display:block; margin-bottom:8px;
+  }
+  .pay-card .pay-email input{
+    width:100%; height:36px; border:1px solid rgba(13,15,12,.12);
+    background:#f7f7f4; border-radius:10px; padding:0 10px;
+    font:600 12px/1 'Poppins', sans-serif; color:#0d0f0c;
+  }
+  .pay-card .tpop-cta{ display:flex; gap:6px; }
+  .pay-card .tpop-cta button{
+    flex:1; border:none; background:#0d0f0c; color:#fff;
+    font:700 10px/1 'Space Grotesk', 'Poppins', sans-serif; letter-spacing:.06em;
+    padding:10px 0; cursor:pointer; border-radius:10px;
+  }
+  .pay-card .tpop-cta button.hash{ background:#efefed; color:#0d0f0c; }
+  .pay-card .tpop-cta button:disabled{ opacity:.65; cursor:wait; }
+
+  .ledger-bar{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    width: var(--grid-w);
+    min-height:48px;
+    flex:0 0 auto;
+  }
+
+  body[data-shell="pwa"] #pwaCompassBtn.compass-fab{
+    position:relative;
+    left:auto;
+    bottom:auto;
+    top:auto;
+    width:46px;
+    height:46px;
+    margin:0;
+    flex:0 0 auto;
+  }
+
+  html.pwa-fitted[data-wide="1"] .pwa-hero{ display:block; }
+  html.pwa-fitted[data-wide="1"] .info,
+  html.pwa-fitted[data-wide="1"] .divider{ display:none; }
+
+  html.pwa-fitted[data-wide="0"][data-vph="tall"] .headline,
+  html.pwa-fitted[data-wide="0"][data-vph="tall"] .subtext{ display:block; }
+
+  html[data-vph="short"] .time,
+  html[data-vph="short"] .date,
+  html[data-vph="mid"] .time,
+  html[data-vph="mid"] .date{ display:none; }
+  html[data-vph="short"] .pay-card,
+  html[data-vph="mid"] .pay-card{ padding:10px 12px; }
+  html[data-vph="short"] .pay-card .tpop-fund,
+  html[data-vph="short"] .pay-card .pay-email,
+  html[data-vph="mid"] .pay-card .tpop-fund{ display:none; }
+  html[data-vph="short"] .pay-stack,
+  html[data-vph="mid"] .pay-stack{ gap:6px; }
+  html[data-vph="short"] .panel,
+  html[data-vph="mid"] .panel{ gap:6px; padding-top:max(8px, env(safe-area-inset-top)); overflow-y:auto; }
+  html[data-vph="short"] .tile{ max-height:64px; border-radius:14px; }
+  html[data-vpw="xs"] .tile{ max-height:56px; border-radius:12px; }
+  html[data-vpw="xs"] .pay-card .tpop-kpis{ gap:4px; }
+
+  /* install button, unobtrusive, only shows when app is installable */
+  #installBtn{
+    display:none;
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:5;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-family:inherit;
+    font-size:13px;
+    padding:8px 14px;
+    border-radius:20px;
+    backdrop-filter:blur(6px);
+  }
+</style>
+<script>
+(function () {
+  function fitGooPwa() {
+    var vv = window.visualViewport;
+    var w = Math.round((vv && vv.width) || window.innerWidth || 360);
+    var h = Math.round((vv && vv.height) || window.innerHeight || 640);
+    var root = document.documentElement;
+    var vpw = w < 380 ? 'xs' : w < 480 ? 'sm' : w < 768 ? 'md' : w < 1100 ? 'lg' : 'xl';
+    var vph = h < 560 ? 'short' : h < 740 ? 'mid' : 'tall';
+    var wide = w >= 900 && h >= 600;
+    root.setAttribute('data-vpw', vpw);
+    root.setAttribute('data-vph', vph);
+    root.setAttribute('data-wide', wide ? '1' : '0');
+    root.classList.add('pwa-fitted');
+    var pad = w < 480 ? 14 : 28;
+    var gridW = Math.min(440, Math.max(240, w - pad * 2));
+    if (wide) gridW = Math.min(440, Math.max(280, w * 0.38));
+    var gap = w < 400 ? 6 : w < 600 ? 8 : 10;
+    var tile = Math.floor((gridW - gap * 3) / 4);
+    tile = Math.max(52, Math.min(86, tile));
+    if (vph === 'short') tile = Math.max(52, Math.min(tile, 64));
+    else if (vph === 'mid') tile = Math.max(56, Math.min(tile, 76));
+    var rows = 3;
+    var payBudget = vph === 'short' ? 210 : vph === 'mid' ? 280 : 340;
+    var chrome = 88 + (wide ? 0 : (vph === 'tall' ? 120 : vph === 'mid' ? 56 : 0));
+    var leftover = h - payBudget - chrome - gap * 2;
+    var tileFromHeight = Math.floor((leftover - gap * (rows - 1)) / rows);
+    if (tileFromHeight > 40) tile = Math.max(52, Math.min(tile, tileFromHeight));
+    gridW = tile * 4 + gap * 3;
+    root.style.setProperty('--tile', tile + 'px');
+    root.style.setProperty('--gap', gap + 'px');
+    root.style.setProperty('--grid-w', gridW + 'px');
+  }
+  window.fitGooPwa = fitGooPwa;
+  fitGooPwa();
+  addEventListener('resize', fitGooPwa);
+  addEventListener('orientationchange', function () { setTimeout(fitGooPwa, 80); });
+  if (window.visualViewport) visualViewport.addEventListener('resize', fitGooPwa);
+})();
+</script>
+</head>
+<body data-shell="pwa">
+
+<div class="pwa-hero" id="pwaHero">
+  <h1>Save the<br>Ocean</h1>
+  <p>More than a football field of coral and mangrove is lost every hour. From bleaching reefs to vanishing shorelines, the consequences of a warming ocean are far reaching.</p>
+</div>
+
+<div class="stage">
+  <div class="panel">
+    <div class="info">
+      <div class="headline" id="headlineText">Save the Ocean</div>
+      <div class="subtext" id="subtextText">More than a football field of coral and mangrove is lost every hour. From bleaching reefs to vanishing shorelines, the consequences of a warming ocean are far reaching.</div>
+
+      <div class="time" id="timeText">--:--<sup id="ampm">am</sup></div>
+      <div class="date" id="dateText">—</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pay-stack" id="pwaFeatureCard">
+      <article class="pay-card">
+        <div class="tpop-h">
+          <span class="tpop-rank">F</span>
+          <div><b>RESTORATION FUND</b><i>Stripe treasury · database</i></div>
+          <span class="tpop-ph" id="pwaPayLive">LIVE</span>
+        </div>
+        <div class="tpop-kpis">
+          <div class="tpop-kpi"><b id="pwaBalOp">—</b><i>AVAILABLE</i></div>
+          <div class="tpop-kpi"><b id="pwaBalPaid">—</b><i>SETTLED</i></div>
+          <div class="tpop-kpi"><b id="pwaBalSplit">85/15</b><i>SPLIT</i></div>
+        </div>
+        <div class="tpop-fund" id="pwaBalFund">Field ops 85% · treasury 15%</div>
+      </article>
+      <article class="pay-card">
+        <div class="tpop-h">
+          <span class="tpop-rank">P</span>
+          <div><b>PERSONAL PAYOUTS</b><i>Your Stripe orders</i></div>
+          <span class="tpop-ph" id="pwaPayStatus">EMAIL</span>
+        </div>
+        <div class="tpop-kpis">
+          <div class="tpop-kpi"><b id="pwaBalYou">—</b><i>PAID</i></div>
+          <div class="tpop-kpi"><b id="pwaBalPend">—</b><i>PENDING</i></div>
+          <div class="tpop-kpi"><b id="pwaBalOrders">0</b><i>ORDERS</i></div>
+        </div>
+        <div class="tpop-fund" id="pwaPayLine">Enter email to load your payouts</div>
+      </article>
+      <article class="pay-card">
+        <label class="pay-email">
+          <input id="pwaPayEmail" type="email" autocomplete="email" placeholder="you@example.com">
+        </label>
+        <div class="tpop-cta">
+          <button type="button" class="pow" id="pwaCheckout">CHECKOUT</button>
+          <button type="button" class="hash" id="pwaWalletView">WALLET</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid" id="iconGrid">
+      <!-- tiles injected by script -->
+    </div>
+    <div class="ledger-bar">
+      <button type="button" id="pwaCompassBtn" class="compass-fab" aria-label="GPS compass">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><polygon points="12 6 14.2 12 12 18 9.8 12" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<button id="installBtn">Install app</button>
+<div class="pwa-load" id="pwaLoad">
+  <div class="em">🌍🌊</div>
+  <div class="spin"></div>
+  <div>Linking live 3D / 2D maps…</div>
+</div>
+<div class="pwa-frame" id="pwaFrame">
+  <button type="button" class="close-view" id="pwaCloseView" aria-label="Back to ledger">←</button>
+  <iframe id="pwaIframe" title="Guardians maps"></iframe>
+</div>
+<script src="../../js/api/config.js"></script>
+<script src="../../js/api/client.js"></script>
+<script src="../../js/api/wallet-ui.js"></script>
+<script src="../../js/goo-core.js"></script>
+<script src="../../js/goo-news.js"></script>
+<script src="../../js/goo-compass.js"></script>
+<script src="../../js/goo-shell.js"></script>
+<script src="../../js/pwa-app.js"></script>
+</body>
+</html>

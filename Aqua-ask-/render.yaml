@@ -1,0 +1,34 @@
+# AquaAsk — Render Blueprint (Linux Docker RAG)
+# Live URL: https://aqua-ask.onrender.com
+# Repo:     https://github.com/IanDev-cmd/Aqua-ask-
+#
+# Image builds a gcc/manylinux Chroma HNSW index from chroma_export.json.gz.
+# After first deploy, set GOOGLE_API_KEY and XAI_API_KEY in the dashboard.
+
+services:
+  - type: web
+    name: aqua-ask
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: CHROMA_DIR
+        value: /app/chroma_db
+      - key: PUBLIC_APP_URL
+        value: https://aqua-ask.onrender.com
+      - key: GITHUB_REPO_URL
+        value: https://github.com/IanDev-cmd/Aqua-ask-
+      - key: XAI_MODEL
+        value: grok-3
+      - key: GOOGLE_CHAT_MODEL
+        value: gemini-2.5-flash-lite
+      - key: GOOGLE_EMBED_MODEL
+        value: models/gemini-embedding-001
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: XAI_API_KEY
+        sync: false
