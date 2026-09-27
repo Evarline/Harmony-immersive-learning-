@@ -69,7 +69,7 @@ GEMINI_CHAT_FALLBACKS = (
     "gemini-flash-lite-latest",
     "gemini-2.5-flash",
 )
-GITHUB_REPO_URL = os.getenv("GITHUB_REPO_URL", "https://github.com/IanDev-cmd/Aqua-ask-")
+GITHUB_REPO_URL = os.getenv("GITHUB_REPO_URL", "https://github.com/IanDev-cmd/Harmony-immersive-learning-")
 PUBLIC_APP_URL = os.getenv("PUBLIC_APP_URL", "https://aqua-ask.onrender.com")
 USER_AGENT = (
     f"ImmersiveLearning/1.0 (+{PUBLIC_APP_URL}; {GITHUB_REPO_URL}) Mozilla/5.0 "

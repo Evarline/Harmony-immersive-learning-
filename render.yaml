@@ -1,0 +1,91 @@
+# Immersive Learning — one Blueprint for the Harmony repo (branch main).
+# Static site serves the home screen, 3D globe, and Ask page.
+# Ask (Docker) and checkout (Node) stay on the $7 Starter plan so they do not sleep.
+
+services:
+  - type: web
+    name: guardians-of-the-ocean
+    runtime: static
+    branch: main
+    buildCommand: "true"
+    staticPublishPath: .
+    buildFilter:
+      paths:
+        - index.html
+        - Guardians-of-the-Ocean/**
+        - Aqua-ask-/aquaask.html
+        - Aqua-ask-/h2o-assets/**
+      ignoredPaths:
+        - Guardians-of-the-Ocean/server/**
+    headers:
+      - path: /Guardians-of-the-Ocean/sw.js
+        name: Cache-Control
+        value: no-cache
+      - path: /Guardians-of-the-Ocean/manifest.webmanifest
+        name: Content-Type
+        value: application/manifest+json
+
+  - type: web
+    name: aqua-ask
+    runtime: docker
+    plan: starter
+    branch: main
+    dockerfilePath: ./Aqua-ask-/Dockerfile
+    dockerContext: ./Aqua-ask-
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - Aqua-ask-/**
+    envVars:
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: CHROMA_DIR
+        value: /app/chroma_db
+      - key: PUBLIC_APP_URL
+        value: https://aqua-ask.onrender.com
+      - key: GITHUB_REPO_URL
+        value: https://github.com/IanDev-cmd/Harmony-immersive-learning-
+      - key: XAI_MODEL
+        value: grok-3
+      - key: GOOGLE_CHAT_MODEL
+        value: gemini-2.5-flash-lite
+      - key: GOOGLE_EMBED_MODEL
+        value: models/gemini-embedding-001
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: XAI_API_KEY
+        sync: false
+
+  - type: web
+    name: guardians-stripe
+    runtime: node
+    plan: starter
+    branch: main
+    rootDir: Guardians-of-the-Ocean/server
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma migrate deploy && node dist/index.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - Guardians-of-the-Ocean/server/**
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATABASE_URL
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: FRONTEND_ORIGIN
+        fromService:
+          name: guardians-of-the-ocean
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: APP_BASE_URL
+        fromService:
+          name: guardians-of-the-ocean
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
